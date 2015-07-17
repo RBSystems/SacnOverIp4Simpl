@@ -1,0 +1,1 @@
+xcopy /s/y C:\Work\sACN\code\Lib\SacnOverIp\SacnOverIp\bin\SacnOverIp.clz C:\Work\sACN\code\Lib\SacnOverIp\s

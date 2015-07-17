@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SacnOverIp", "SacnOverIp\SacnOverIp.csproj", "{E4DC18A7-87E6-427D-9102-EAB98E7B22DB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4DC18A7-87E6-427D-9102-EAB98E7B22DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4DC18A7-87E6-427D-9102-EAB98E7B22DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4DC18A7-87E6-427D-9102-EAB98E7B22DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4DC18A7-87E6-427D-9102-EAB98E7B22DB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,153 @@
+/*******************************************************************************************
+  Compiler Directives
+*******************************************************************************************/
+// #ENABLE_DYNAMIC
+// #HINT ""
+//#DEFINE_CONSTANT	
+#CATEGORY "0"
+// #PRINT_TO_TRACE
+// #DIGITAL_EXPAND 
+// #ANALOG_SERIAL_EXPAND 
+// #OUTPUT_SHIFT 
+#DEFAULT_VOLATILE
+#ENABLE_STACK_CHECKING
+#ENABLE_TRACE
+// #ENCODING_ASCII
+// #ENCODING_UTF16
+// #ENCODING_INHERIT_FROM_PARENT
+// #ENCODING_INHERIT_FROM_PROGRAM
+
+/*******************************************************************************************
+  Include Librariesd
+*******************************************************************************************/
+// #CRESTRON_LIBRARY ""
+// #USER_LIBRARY ""
+#User_SIMPLSHARP_LIBRARY "SacnOverIp"
+//#CRESTRON_SIMPLSHARP_LIBRARY "SacnOverIp"
+
+/*******************************************************************************************
+  Parameters
+  (Uncomment and declare parameters as needed)
+*******************************************************************************************/
+INTEGER_PARAMETER Universe;
+// SIGNED_INTEGER_PARAMETER
+// LONG_INTEGER_PARAMETER
+// SIGNED_LONG_INTEGER_PARAMETER
+//STRING_PARAMETER ChannelIp[5][15];
+//STRING_PARAMETER SourceName[64];
+
+/*******************************************************************************************
+  DIGITAL, ANALOG and SERIAL INPUTS and OUTPUTS
+*******************************************************************************************/
+DIGITAL_INPUT _skip_,_skip_,_skip_,_skip_,_skip_,_skip_,_skip_;
+//DIGITAL_INPUT Send;
+//STRING_INPUT IpAddress[15];
+//ANALOG_INPUT Slot[512];
+// BUFFER_INPUT
+
+DIGITAL_OUTPUT _skip_;
+//ANALOG_OUTPUT Slot[512];
+STRING_OUTPUT SlotS[8];
+
+/*******************************************************************************************
+  Class Def
+*******************************************************************************************/
+SacnSlave	Slave;
+
+/*******************************************************************************************
+  Global Variables
+*******************************************************************************************/
+//SIGNED_LONG_INTEGER 
+//INTEGER 
+//STRING
+// LONG_INTEGER
+// SIGNED_INTEGER
+
+/*******************************************************************************************
+  functions
+*******************************************************************************************/
+function RegisterDelegates()
+{
+	// keyword (<local instance>, <# method>, <local callback function>
+//	RegisterDelegate(Slave, SendSacn, SendJoins);
+	RegisterDelegate(Slave, ReadSacn, ReadJoins);
+}
+
+function InitializeSacn()
+{
+	Slave.InitializeFields(Universe);
+}
+
+callback function ReadJoins()
+{
+	string dmx64[192];
+	integer y;
+	integer x;
+	integer i;
+	SIGNED_LONG_INTEGER timeS;
+	
+	integer chunks;
+	integer	z;
+    chunks = 4;
+	z = chunks - 1;
+    
+	for (x = 0 to z)
+	{
+		timeS = Slave.GetTime();
+		print("S+ start Block %d of %d: %ld\n", x + 1, chunks, timeS);
+
+		y = x * 512/chunks;
+		dmx64 = "";
+		for (i = y to y + ((512/chunks) -1))
+		{
+			//b = Slave.DmxData[i-1] MOD 256;
+			//if (len(dmx64))
+				makestring(dmx64, "%s%02x", dmx64, Slave.DmxData[i]);
+		}
+		SlotS[x + 1] = dmx64;
+	}
+	
+	timeS = Slave.GetTime();
+	print("S+ end: %ld\n", timeS);
+}
+
+//callback function SendJoins(string dmx512)
+//{
+//	string dmx[1536];
+//	string s[3];
+//	integer i;
+//	integer hi;
+//	integer lo;
+//    
+//    PRINT("s+ \n");
+//	//PRINT("\n dmx512: %s", dmx512);	
+//	dmx = dmx512;
+//	
+//	i = 1;
+//	while (find("-", dmx) && i <= 512 )
+////	while (find("-", dmx) && i <= 8 )
+//	{
+//		s = remove("-", dmx);
+//		s = left(s, 2);
+//		lo = HexToI(s);
+////		hi = lo << 8;
+////		Slot[i] = hi | lo;	// joins 1 based
+//		Slot[i] = lo;	// joins 1 based
+//		//PRINT("\n inside %d , %X", i, lo);
+//		i = i + 1;
+//	}
+//}
+
+/*******************************************************************************************
+  Event Handlers
+*******************************************************************************************/
+
+/*******************************************************************************************
+  Main()
+*******************************************************************************************/
+Function Main()
+{
+	WaitForInitializationComplete();
+	RegisterDelegates();
+	InitializeSacn();
+}

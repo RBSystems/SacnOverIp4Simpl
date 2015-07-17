@@ -1,0 +1,118 @@
+/*******************************************************************************************
+  Compiler Directives
+*******************************************************************************************/
+// #ENABLE_DYNAMIC
+// #HINT ""
+//#DEFINE_CONSTANT	
+#CATEGORY "0"
+// #PRINT_TO_TRACE
+// #DIGITAL_EXPAND 
+// #ANALOG_SERIAL_EXPAND 
+// #OUTPUT_SHIFT 
+#DEFAULT_VOLATILE
+#ENABLE_STACK_CHECKING
+#ENABLE_TRACE
+// #ENCODING_ASCII
+// #ENCODING_UTF16
+// #ENCODING_INHERIT_FROM_PARENT
+// #ENCODING_INHERIT_FROM_PROGRAM
+
+/*******************************************************************************************
+  Include Librariesd
+*******************************************************************************************/
+// #CRESTRON_LIBRARY ""
+// #USER_LIBRARY ""
+#User_SIMPLSHARP_LIBRARY "SacnOverIp"
+//#CRESTRON_SIMPLSHARP_LIBRARY "SacnOverIp"
+
+/*******************************************************************************************
+  Parameters
+  (Uncomment and declare parameters as needed)
+*******************************************************************************************/
+INTEGER_PARAMETER Universe;
+// SIGNED_INTEGER_PARAMETER
+// LONG_INTEGER_PARAMETER
+// SIGNED_LONG_INTEGER_PARAMETER
+STRING_PARAMETER ChannelIp[5][15];
+STRING_PARAMETER SourceName[64];
+
+/*******************************************************************************************
+  DIGITAL, ANALOG and SERIAL INPUTS and OUTPUTS
+*******************************************************************************************/
+DIGITAL_INPUT _skip_,_skip_,_skip_,_skip_,_skip_,_skip_,_skip_;
+DIGITAL_INPUT Send;
+//STRING_INPUT IpAddress[15];
+ANALOG_INPUT Slot[512];
+// BUFFER_INPUT
+
+//DIGITAL_OUTPUT 
+//ANALOG_OUTPUT 
+//ANALOG_OUTPUT 
+//STRING_OUTPUT 
+
+/*******************************************************************************************
+  Class Def
+*******************************************************************************************/
+SacnMaster	Master;
+
+/*******************************************************************************************
+  Global Variables
+*******************************************************************************************/
+//SIGNED_LONG_INTEGER 
+//INTEGER 
+//STRING
+// LONG_INTEGER
+// SIGNED_INTEGER
+
+/*******************************************************************************************
+  functions
+*******************************************************************************************/
+
+function InitializeSacn()
+{
+	integer i;
+	
+	for (i = 1 to 5)
+		Master.InitializeConnection(ChannelIp[i]);
+
+	Master.InitializeFields(SourceName, Universe);
+}
+
+function SendSacn()
+{
+	string dmx512[1536];
+	string s[2];
+	integer i;
+	integer b;
+		
+	dmx512 = "";
+	
+	for (i = 1 to 512)
+	{
+		b = Slot[i] MOD 256;
+		if (len(dmx512))
+			makestring(dmx512, "%s,%02x", dmx512, b);
+		else
+			makestring(dmx512, "%02x", b);
+	}
+	
+	Master.Send(dmx512);
+//	PRINT("dmx512: %s", dmx512);
+}
+
+/*******************************************************************************************
+  Event Handlers
+*******************************************************************************************/
+push Send
+{	
+	SendSacn();
+}
+
+/*******************************************************************************************
+  Main()
+*******************************************************************************************/
+Function Main()
+{
+	WaitForInitializationComplete();
+	InitializeSacn();
+}

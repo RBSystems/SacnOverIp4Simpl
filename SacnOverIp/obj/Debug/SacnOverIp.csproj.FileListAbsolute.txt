@@ -1,0 +1,7 @@
+C:\Work\sACN\code\Lib\SacnOverIp\SacnOverIp\obj\Debug\ResolveAssemblyReference.cache
+C:\Work\sACN\code\Lib\SacnOverIp\SacnOverIp\bin\SacnOverIp.dll
+C:\Work\sACN\code\Lib\SacnOverIp\SacnOverIp\bin\SacnOverIp.pdb
+C:\Work\sACN\code\Lib\SacnOverIp\SacnOverIp\bin\SimplSharpCustomAttributesInterface.dll
+C:\Work\sACN\code\Lib\SacnOverIp\SacnOverIp\bin\SimplSharpHelperInterface.dll
+C:\Work\sACN\code\Lib\SacnOverIp\SacnOverIp\obj\Debug\SacnOverIp.dll
+C:\Work\sACN\code\Lib\SacnOverIp\SacnOverIp\obj\Debug\SacnOverIp.pdb
